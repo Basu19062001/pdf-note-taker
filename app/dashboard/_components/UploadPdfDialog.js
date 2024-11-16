@@ -12,21 +12,25 @@ import {
 import { Input } from "@/components/ui/input";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader2Icon } from "lucide-react";
+import { Flag, Loader2Icon } from "lucide-react";
 import uuid4 from "uuid4";
 import { useUser } from "@clerk/nextjs";
+import axios from "axios";
 
 function UploadPdfDialog({children}) {
   
   const generateUploadUrl = useMutation(api.fileStorage.generateUploadUrl);
   const addFileEntry = useMutation(api.fileStorage.AddFileEntryToDb);
   const getFileUrl = useMutation(api.fileStorage.getFileUrl);
+  const embeddDocument=useAction(api.myAction.ingest);
   const {user} = useUser();
   const [file,setFile] = useState(); 
   const [loading,setLoading] = useState(false);
   const [fileName,setFileName] = useState();
+  const [open,setOpen] = useState(false);
+
   
   const OnFileSelect=(event)=>{
     setFile(event.target.files[0]); 
@@ -59,13 +63,23 @@ function UploadPdfDialog({children}) {
       createdBy:user?.primaryEmailAddress?.emailAddress
     })
     console.log(resp);
+
+    // API Call to Fetch Process Data
+    const ApiResp=await axios.get('/api/pdf-loader?pdfUrl='+fileUrl);
+    console.log(ApiResp.data.result);
+    await embeddDocument({
+      splitText:ApiResp.data.result,
+      fileId:fileId
+    });
+    // console.log(embeddResult);
     setLoading(false);
+    setOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger asChild>
-        {children}
+        <Button onClick={()=>setOpen(true)} className="w-full">+ Upload PDF File</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -92,7 +106,7 @@ function UploadPdfDialog({children}) {
               Close
             </Button>
           </DialogClose>
-            <Button onClick={OnUpload}>
+            <Button onClick={OnUpload} disabled={loading}>
               {
                 loading ? <Loader2Icon className="animate-spin"/> : "Upload"
 

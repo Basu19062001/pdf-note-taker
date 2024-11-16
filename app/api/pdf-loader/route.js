@@ -2,9 +2,15 @@ import { NextResponse } from "next/server";
 import { WebPDFLoader } from "@langchain/community/document_loaders/web/pdf";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 
-const pdfUrl = "https://whimsical-cow-508.convex.cloud/api/storage/485c8d60-abfb-4af3-9d68-a85fcbcf7198"
+// const pdfUrl = "https://whimsical-cow-508.convex.cloud/api/storage/485c8d60-abfb-4af3-9d68-a85fcbcf7198"
 
 export async function GET(req){
+
+    const reqUrl = req.url;
+    const {searchParams} = new URL(reqUrl);
+    const pdfUrl=searchParams.get('pdfUrl');
+    console.log(pdfUrl);
+
     // 1. Load PDF File
     const response= await fetch(pdfUrl);
     const data=await response.blob();
