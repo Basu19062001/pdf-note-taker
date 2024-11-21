@@ -3,11 +3,20 @@ import {  EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React from "react";
 import EditorExtension from "./EditorExtension";
+import { TextAlign } from '@tiptap/extension-text-align';
+import Highlight from "@tiptap/extension-highlight";
+import Underline from "@tiptap/extension-underline";
+
 
 function TextEditor() {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Highlight,
+      Underline,
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
       Placeholder.configure({
         placeholder: "Start taking your notes here...",
       }),
