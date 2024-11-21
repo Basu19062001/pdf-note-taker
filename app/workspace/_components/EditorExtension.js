@@ -1,16 +1,29 @@
+import { api } from "@/convex/_generated/api";
+import { useAction } from "convex/react";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Code, Heading1, Heading2, Heading3, Highlighter, Italic, List, Redo, Sparkles, Strikethrough, TextQuote, Underline, Undo } from "lucide-react";
+import { useParams } from "next/navigation";
 import React from "react";
 
 
 function EditorExtension({ editor }) {
 
-  const onAIClick=()=>{
+  const {fileId} = useParams();
+  const searchAI=useAction(api.myAction.search);
+  
+  const onAIClick=async()=>{
     const selectedText=editor.state.doc.textBetween(
         editor.state.selection.from,
         editor.state.selection.to,
         ' '
     );
     console.log(selectedText);
+
+    const result = await searchAI({
+        query:selectedText,
+        fileId:fileId,
+    })
+
+    console.log("Unformatted Ans:",result); 
   }
 
   return editor&&(
@@ -120,7 +133,7 @@ function EditorExtension({ editor }) {
           </button>
 
           <button
-            onClick={() => onAIClick()}
+            onClick={() => onAIClick()}  
             className={'hover:text-blue-500'}
           >
             <Sparkles/>

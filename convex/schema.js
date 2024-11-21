@@ -18,11 +18,13 @@ export default defineSchema({
 
   documents: defineTable({
     embedding: v.array(v.number()),
-    text: v.string(),
-    metadata: v.any(),
+    text: v.string(), 
+    metadata: v.object({
+      fileId: v.string(), // Define `fileId` inside the `metadata` object
+    }),
   }).vectorIndex("byEmbedding", {
     vectorField: "embedding",
-    dimensions: 1536,
+    dimensions: 768,
   })
   
 });
