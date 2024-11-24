@@ -69,7 +69,7 @@ function UploadPdfDialog({children}) {
     console.log(ApiResp.data.result);
     await embeddDocument({
       splitText:ApiResp.data.result,
-      fileId:fileId
+      fileId:fileId, // here metadata info
     });
     // console.log(embeddResult);
     setLoading(false);

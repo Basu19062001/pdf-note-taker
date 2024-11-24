@@ -21,6 +21,7 @@ export const AddFileEntryToDb = mutation({
       fileUrl:args.fileUrl,
       createdBy: args.createdBy,
     });
+    
     return "Inserted PDF file"
   },
 });
