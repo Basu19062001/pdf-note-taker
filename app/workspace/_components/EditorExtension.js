@@ -35,6 +35,12 @@ function EditorExtension({ editor }) {
     
     const aiModelResult = await chatSession.sendMessage(PROMPT);
     console.log(aiModelResult.response.text());
+    const finalAns = aiModelResult.response.text().replace('```','').replace('html','')
+    .replace('<h1>','').replace('```','');
+
+    const allText = editor.getHTML();
+    editor.commands.setContent(allText+'<p> <strong>Answer: </strong>'+finalAns+' </p>');
+
   }
 
   return editor&&(
