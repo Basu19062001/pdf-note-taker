@@ -1,3 +1,4 @@
+import { chatSession } from "@/configs/AIModel";
 import { api } from "@/convex/_generated/api";
 import { useAction } from "convex/react";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Code, Heading1, Heading2, Heading3, Highlighter, Italic, List, Redo, Sparkles, Strikethrough, TextQuote, Underline, Undo } from "lucide-react";
@@ -23,7 +24,17 @@ function EditorExtension({ editor }) {
         fileId:fileId,
     })
 
-    console.log("Unformatted Ans:",result); 
+    const unFormattedAns=JSON.parse(result);
+    let AllUnFormattedAns='';
+    unFormattedAns&&unFormattedAns.forEach(item=>{
+      AllUnFormattedAns=AllUnFormattedAns+item.pageContent
+    });
+
+    const PROMPT = "For question :"+selectedText+" and with the given content as answer,"+
+    " please give appropriate answer in HTML format. The answer content is: "+AllUnFormattedAns;
+    
+    const aiModelResult = await chatSession.sendMessage(PROMPT);
+    console.log(aiModelResult.response.text());
   }
 
   return editor&&(

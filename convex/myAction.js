@@ -44,7 +44,7 @@ export const search = action({
        { ctx });
 
     const resultOne = (await vectorStore.similaritySearch(args.query, 1))
-      .filter(q => q.metadata.fileId === args.fileId);
+      .filter(q => q.metadata.fileId == args.fileId);
     console.log(resultOne);
 
     return JSON.stringify(resultOne);
