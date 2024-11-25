@@ -1,6 +1,7 @@
 import { chatSession } from "@/configs/AIModel";
 import { api } from "@/convex/_generated/api";
-import { useAction } from "convex/react";
+import { useUser } from "@clerk/nextjs";
+import { useAction, useMutation } from "convex/react";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Code, Heading1, Heading2, Heading3, Highlighter, Italic, List, Redo, Sparkles, Strikethrough, TextQuote, Underline, Undo } from "lucide-react";
 import { useParams } from "next/navigation";
 import React from "react";
@@ -11,6 +12,8 @@ function EditorExtension({ editor }) {
 
   const {fileId} = useParams();
   const searchAI=useAction(api.myAction.search);
+  const saveNotes=useMutation(api.notes.AddNotes);
+  const {user}=useUser();
   
   const onAIClick=async()=>{
     toast("AI is getting your answer....");
@@ -44,6 +47,11 @@ function EditorExtension({ editor }) {
     const allText = editor.getHTML();
     editor.commands.setContent(allText+'<p> <strong>Answer: </strong>'+finalAns+' </p>');
 
+    saveNotes({
+      notes:editor.getHTML(),
+      fileId:fileId,
+      createdBy:user?.primaryEmailAddress?.emailAddress,
+    })
   }
 
   return editor&&(

@@ -23,6 +23,12 @@ export default defineSchema({
   }).vectorIndex("byEmbedding", {
     vectorField: "embedding",
     dimensions: 768,
-  })
+  }),
+
+  notes:defineTable({
+    fileId:v.string(),
+    notes:v.string(),
+    createBy:v.string(),
+  }),
   
 });
