@@ -19,7 +19,7 @@ function Workspace(){
     
     return(
         <div>
-            <WorkspaceHeader/>
+            <WorkspaceHeader fileName={fileInfo?.fileName}/>
 
             <div className="grid grid-cols-2 gap-5"> 
                 <div>

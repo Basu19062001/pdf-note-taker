@@ -4,6 +4,7 @@ import { useAction } from "convex/react";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Bold, Code, Heading1, Heading2, Heading3, Highlighter, Italic, List, Redo, Sparkles, Strikethrough, TextQuote, Underline, Undo } from "lucide-react";
 import { useParams } from "next/navigation";
 import React from "react";
+import { toast } from "sonner";
 
 
 function EditorExtension({ editor }) {
@@ -12,6 +13,8 @@ function EditorExtension({ editor }) {
   const searchAI=useAction(api.myAction.search);
   
   const onAIClick=async()=>{
+    toast("AI is getting your answer....");
+
     const selectedText=editor.state.doc.textBetween(
         editor.state.selection.from,
         editor.state.selection.to,
