@@ -30,7 +30,7 @@ function TextEditor() {
   return (
     <div >
        <EditorExtension editor={editor}/>
-      <div>
+      <div className="overflow-scroll h-[88vh]">
         <EditorContent editor={editor} />
       </div>
     </div>
