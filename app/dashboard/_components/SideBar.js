@@ -8,9 +8,10 @@ import UploadPdfDialog from "./UploadPdfDialog";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { usePathname } from "next/navigation";
 
 function SideBar() {
-
+  const path = usePathname();
   const {user} = useUser();
 
   const fileList=useQuery(api.fileStorage.GetUserFiles,{
@@ -29,16 +30,20 @@ function SideBar() {
 
         </UploadPdfDialog>
 
-        <div className="flex gap-2 items-center
+        <div className={`flex gap-2 items-center
         p-3 mt-5 hover:bg-slate-100 rounded-lg
-        cursor-pointer">
+        cursor-pointer
+        ${path=='/dashboard'&&'bg-slate-200'}
+        `}>
             <Layout/>
             <h2>Workspace</h2>
         </div>
 
-        <div className="flex gap-2 items-center
+        <div className={`flex gap-2 items-center
         p-3 mt-1 hover:bg-slate-100 rounded-lg 
-        cursor-pointer">
+        cursor-pointer
+        ${path=='/dashboard/upgrade'&&'bg-slate-200'}
+        `}>
             <Shield/>
             <h2>Upgrade</h2>
         </div>
