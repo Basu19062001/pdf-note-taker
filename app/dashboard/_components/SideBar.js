@@ -1,11 +1,22 @@
+"use client"
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Layout, Shield } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import UploadPdfDialog from "./UploadPdfDialog";
+import { useUser } from "@clerk/nextjs";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
 function SideBar() {
+
+  const {user} = useUser();
+
+  const fileList=useQuery(api.fileStorage.GetUserFiles,{
+    userEmail:user?.primaryEmailAddress?.emailAddress
+  });
+
   return (
     <div className="shadow-md h-screen p-5">
       
@@ -13,7 +24,7 @@ function SideBar() {
       
       <div className="mt-10">
 
-        <UploadPdfDialog>
+        <UploadPdfDialog isMaxFile={fileList?.length>=5?true:false}>
         <Button className="w-full">+ Upload PDF</Button>
 
         </UploadPdfDialog>
@@ -35,8 +46,8 @@ function SideBar() {
       </div>
 
       <div className="absolute bottom-14 w-[85%] p-2">
-      <Progress value={33} />
-      <p className="text-sm mt-1">2 out of 5 Pdf Uploaded</p>
+      <Progress value={(fileList?.length/5)*100} />
+      <p className="text-sm mt-1">{fileList?.length} out of 5 Pdf Uploaded</p>
       <p className="text-sm text-gray-400 mt-1">Upgrade to upload more PDF</p>
 
       </div>
