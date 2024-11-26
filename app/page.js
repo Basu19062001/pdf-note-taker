@@ -73,7 +73,7 @@ export default function Home() {
           Get Started
         </Button>
         <Image
-          src="/hero-image-dark.png"
+          src="/Hero.jpg"
           alt="Hero Image"
           width={500}
           height={300}
