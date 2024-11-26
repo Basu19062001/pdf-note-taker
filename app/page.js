@@ -24,6 +24,10 @@ export default function Home() {
     }
   }, [user, isClient]);
 
+  const handleGetStarted = () => {
+    router.push("/sign-up"); // Redirect to sign-up page
+  };
+
   const CheckUser = async () => {
     const result = await createUser({
       email: user?.primaryEmailAddress?.emailAddress,
@@ -69,7 +73,7 @@ export default function Home() {
         <p className="mt-4 text-lg text-gray-400 max-w-2xl">
           Turn your PDFs into meaningful notes with cutting-edge AI technology. Fast, secure, and easy to use.
         </p>
-        <Button className="mt-8 px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg rounded-lg hover:from-blue-700 hover:to-purple-700 shadow-lg transform hover:scale-105 transition-transform duration-200">
+        <Button onClick={handleGetStarted} className="mt-8 px-10 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg rounded-lg hover:from-blue-700 hover:to-purple-700 shadow-lg transform hover:scale-105 transition-transform duration-200">
           Get Started
         </Button>
         <Image
